@@ -1,7 +1,7 @@
 import React from 'react';
 import TodoList from './components/TodoComponents/TodoList';
 import TodoForm from './components/TodoComponents/TodoForm';
-//import'./components/TodoComponents/Todo.css';
+import'./components/TodoComponents/Todo.css';
 
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
@@ -16,6 +16,7 @@ class App extends React.Component {
 constructor(){
   super();
   this.state={
+    isLoading:true,
     todos:listTodos,
     todo:''
   }
@@ -51,6 +52,18 @@ clearTodo=e=>{
   let todos=this.state.todos.slice();
   todos=todos.filter(todo=>!todo.completed);
   this.setState({todos})
+}
+//trying to get local storage to work
+componentWillMount(){
+  localStorage.getItem('todo')&& this.setState({
+    todo:JSON.parse(localStorage.getItem('todo')),
+    isLoading:false
+  })
+}
+//trying to get local storage to work
+componentWillUpdate(nextProps,nextState){
+  localStorage.setItem('todo',JSON.stringify(nextState.todo));
+  localStorage.setItem('todoDate',Date.now());
 }
   render() {
     return (
